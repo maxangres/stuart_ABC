@@ -3,7 +3,7 @@
 
 This repository entails a version of the stuart R package written by Martin Schultze in collaboration with Johanna Schüller and myself. The Stuart (Subtests Using Algorithmic Rummaging Techniques) package offers a framework for metaheuristic algorithms which enable the user to construct subtests from psychometric scales. For an in-depth exploration of the package please visit the [package description](https://cran.r-project.org/web/packages/stuart/index.html) and the [manual](https://cran.r-project.org/web/packages/stuart/stuart.pdf).
 
-The version included in this repository includes an Artificial Bee Colony Algorithm (ABC) which has not yet been merged with the main branch also accessible [here](https://bitbucket.org/martscht/stuart/src/7e21bcea11820b2924d4d3cdd8be802dddbebb6e/?at=feature%2FArtificialBees).
+The version included in this repository includes an Artificial Bee Colony Algorithm (ABC) which has not yet been merged with the main branch also accessible [here](https://bitbucket.org/martscht/stuart/src/7e21bcea11820b2924d4d3cdd8be802dddbebb6e/?at=feature%2FArtificialBees). Code exclusively written by me entail the abc.R, abc.repair.operator.R and stuart.abc files. 
 
 ## Psychometric Scale Shortening
 
