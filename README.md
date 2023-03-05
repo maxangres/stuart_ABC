@@ -1,9 +1,9 @@
 # Artificial Bee Algorithm for Psychometric Scale Shortening
 
 
-This repository entails a version of the stuart R package written by Martin Schultze in collaboration with Johanna Schüller and myself. The Stuart (Subtests Using Algorithmic Rummaging Techniques) package offers a framework for metaheuristic algorithms which enable the user to construct subtests from psychometric scales. For an in-depth exploration of the package please visit [https://cran.r-project.org/web/packages/stuart/index.html](https://cran.r-project.org/web/packages/stuart/index.html) and [https://cran.r-project.org/web/packages/stuart/stuart.pdf](https://cran.r-project.org/web/packages/stuart/stuart.pdf).
+This repository entails a version of the stuart R package written by Martin Schultze in collaboration with Johanna Schüller and myself. The Stuart (Subtests Using Algorithmic Rummaging Techniques) package offers a framework for metaheuristic algorithms which enable the user to construct subtests from psychometric scales. For an in-depth exploration of the package please visit the [package description](https://cran.r-project.org/web/packages/stuart/index.html) and the [manual](https://cran.r-project.org/web/packages/stuart/stuart.pdf).
 
-The version included in this repository includes an Artificial Bee Colony Algorithm (ABC) which has not yet been merged with the main branch accessible under: … .
+The version included in this repository includes an Artificial Bee Colony Algorithm (ABC) which has not yet been merged with the main branch also accessible [here](https://bitbucket.org/martscht/stuart/src/7e21bcea11820b2924d4d3cdd8be802dddbebb6e/?at=feature%2FArtificialBees).
 
 ## Psychometric Scale Shortening
 
@@ -81,64 +81,94 @@ Construct subtests from a given pool of items using an artificial bee colony alg
     )
 
 ## Arguments
-#### General Arguments
+
 `data`  A data.frame containing all relevant data.  
+
 `factor.structure` A list linking factors to items. The names of the list elements correspond to the factor names. Each list element must contain a character-vector of item names that are indicators of this factor.  
+
 `capacity`  A list containing the number of items per subtest.  This must be in the same order as the  `factor.structure`  provided. If a single number, it is applied to all subtests. If  *NULL*  all items are evenly distributed among the subtests.
+
 `item.weights`  A placeholder. Currently all weights are assumed to be one.  
-`item.invariance` A character vector of length 1 or the same length as  factor.structure  containing the desired invariance levels between items pertaining to the same subtest. Currently there are five options: ’congeneric’, ’ess.equivalent’, ’ess.parallel’,  ’equivalent’, and ’parallel’, the first being the default.  
+
+`item.invariance` A character vector of length 1 or the same length as  factor.structure  containing the desired invariance levels between items pertaining to the same subtest. Currently there are five options: *congeneric*, *ess.equivalent*, *ess.parallel*,  *equivalent*, and *parallel*, the first being the default.  
+
 `repeated.measures` A list linking factors that are repeated measures of each other. Repeated factors must be in one element of the list - other sets of factors in other elements of the list. When this is  *NULL*  (the default) a cross-sectional model is estimated.  
-`long.invariance` A character vector of length 1 or the same length as  repeated.measures  containing the longitudinal invariance level of repeated items. Currently there are four options:  ’configural’, ’weak’, ’strong’, and ’strict’.  Defaults to ’strict’.  When `repeated.measures`=*NULL*  this argument is ignored.  
+
+`long.invariance` A character vector of length 1 or the same length as  repeated.measures  containing the longitudinal invariance level of repeated items. Currently there are four options:  *configural*, *weak*, *strong*, and *strict*.  Defaults to *strict*.  When `repeated.measures`=*NULL*  this argument is ignored. 
+ 
 `mtmm`  A list linking factors that are measurements of the same construct with different methods. Measurements of the same construct must be in one element of the list - other sets of methods in other elements of the list. When this is  *NULL*  (the  
 default) a single method model is estimated.  
+
 `mtmm.invariance` A character vector of length 1 or the same length as  mtmm  containing the invariance level of MTMM items. Currently there are five options: *none*, *configural*, *weak*, *strong*, and *strict*. Defaults to *configural*. With *none* differing items are allowed for different methods. When  `mtmm`=*NULL*  this argument is ignored.  
+
 `grouping`  The name of the grouping variable. The grouping variable must be part of  data provided and must be a numeric variable.  
-`group.invariance`  A single value describing the assumed invariance of items across groups. Currently there are four options: ’configural’, ’weak’, ’strong’, and ’strict’. Defaults to ’strict’. When  grouping=NULL  this argument is ignored.  
-`comparisons`  A character vector containing any combination of ’item’, ’long’, ’mtmm’, and ’group’ indicating which invariance should be assessed via model comparisons. The order of the vector dictates the sequence in which model comparisons are performed. Defaults to  NULL  meaning that no model comparisons are performed.  
-`auxiliary`  The names of auxiliary variables in  data. These can be used in additional modeling steps that may be provided in  analysis.options$model.  
-`use.order`  A logical indicating whether or not to take the selection order of the items into account. Defaults to  FALSE.  
-`software`  The name of the estimation software. Can currently be ’lavaan’ (the default) or  ’Mplus’. Each option requires the software to be installed.  
-`cores`  The number of cores to be used in parallel processing. If  NULL  (the default) the result of detectCores will be used. On Unix-y machines parallel processing is implemented via mclapply, on Windows machines it is realized via parLapply.  
+
+`group.invariance`  A single value describing the assumed invariance of items across groups. Currently there are four options: *configural*, *weak*, *strong*, and *strict*. Defaults to *strict*. When `grouping` = *NULL*  this argument is ignored.  
+
+`comparisons`  A character vector containing any combination of *item*, *long*, *mtmm*, and *group* indicating which invariance should be assessed via model comparisons. The order of the vector dictates the sequence in which model comparisons are performed. Defaults to  *NULL*  meaning that no model comparisons are performed.  
+
+`auxiliary`  The names of auxiliary variables in  data. These can be used in additional modeling steps that may be provided in  `analysis.options$model`.  
+
+`use.order`  A logical indicating whether or not to take the selection order of the items into account. Defaults to *FALSE*.  
+
+`software`  The name of the estimation software. Can currently be *lavaan* (the default) or  *Mplus*. Each option requires the software to be installed.  
+
+`cores`  The number of cores to be used in parallel processing. If  *NULL*  (the default) the result of detectCores will be used. On Unix-y machines parallel processing is implemented via mclapply, on Windows machines it is realized via parLapply.  
+
 `objective`  A function that converts the results of model estimation into a pheromone. 
-#### ABC specific parameters
-##### General
-`generations` Maximum number of generations to run. Defaults to 256.
-`individuals` The number of individuals per generation. Defaults to 64.
-`limit` A number adaptable to the state of the search that broadens or focuses the search space. Defaults to 100
-##### Employed Bee Phase
-`ls.sel` Determines whether new foodsource is selected for every limit iteration, can be \code{'narrow'} for ongoing item selection from first selected food source or \code{'roulette'} or \code{'wide'} for new selected solution for every iteration
-##### Onlooker Bee Phase
+
+`generations` Maximum number of generations to run. Defaults to 64.
+
+`individuals` The number of individuals per generation. Defaults to 16.
+
+`limit` A number adaptable to the state of the search that broadens or focuses the search space. Defaults to scheduled
+
+
+`ls.sel` Determines whether new foodsource is selected for every limit iteration, can be *narrow* for ongoing item selection from first selected food source or *wide* for new selected solution for every iteration
+
 `selection` Determines whether tournament or proportional selection is applied for partner selection in the onlooker bee phase
-`ls.onlooker.sel` The selected method by which onlooker bees select there food sources. Can be either \code{'roulette'} for roulette random selection or \code{'tournament'} (the default) for a semi-deterministic selection.
-##### Scout Bee Phase / Repair Operator
+
+`ls.onlooker.sel` The selected method by which onlooker bees select there food sources. Can be either *proportional* for roulette random selection *tournament* (the default) for a semi-deterministic selection.
+
 `scout.selection` Determines the kind of selection for repair operator
+
 `cutoff` percentage of solution that will be eliminated in the repair operator
+
 `size_best_fs` how many of the best solutions are saved
+
 `size_rep_t size` of the tournament for repair items
+
 `number_gen` number of generation over which scout bees need to replace whole population without improvement (maybe second parameter needed)
 
-`selection.pressure` The pressure exerted during the selection process, depending on the \code{selection.pressure}: if \code{selection = 'proportional'} the non-linearity coefficient of the pheromone when determining selection probability (the default is 1); if \code{selection = 'proportional'} the number of randomly selected individuals from which to choose the best (the default is 5).
+`selection.pressure` The pressure exerted during the selection process, depending on the \code{selection.pressure}: if *selection* = *proportional* the non-linearity coefficient of the pheromone when determining selection probability (the default is 1); if `selection` = *proportional* the number of randomly selected individuals from which to choose the best (the default is 5).
 
-`convergence.criterion` The criterion by which convergence is determined. Can be one of four criteria \code{'variance'}, \code{'median'}, \code{'geno.within'}, and \code{'geno.between'}, \code{'scout'}, \code{'none'} . See 'details'.
+`convergence.criterion` The criterion by which convergence is determined. Can be one of four criteria *variance*, *median*, *geno.within*, and *geno.between*, *scout*, *none* . See 'details'.
 
 `number_gen` number of generations over which a certain amount of scout iniatiations has to exceed threshold
+
 `per_gen` number of scout initation per generation constituting the threshold
-`tolerance` The tolerance for determining convergence. The default depends on the setting used for \code{convergence.criterion}. See 'details'.
-`schedule` The counter which the scheduling of parameters pertains to. Can be either 'run' (the default), for a continuous schedule, 'generation', for a schedule that is restarted every time the population is reinitialized.
-`analysis.options` A list additional arguments to be passed to the estimation software. The names of list elements must correspond to the arguments changed in the respective estimation software. E.g. \code{analysis.options$model} can contain additional modeling commands - such as regressions on auxiliary variables.
-`suppress.model` A logical indicating whether to suppress the default model generation. If \code{TRUE} a model must be provided in \code{analysis.options$model}.
-`seed` A random seed for the generation of random samples. See \code{\link{Random}} for more details.
-`filename` The stem of the filenames used to save inputs, outputs, and data files when \code{software='Mplus'}. This may include the file path. When \code{NULL} (the default) files will be saved to the temporary directory, which is deleted when the R session is ended.
+
+`tolerance` The tolerance for determining convergence. The default depends on the setting used for `convergence.criterion`. 
+
+`schedule` The counter which the scheduling of parameters pertains to. Can be either *run* (the default), for a continuous schedule, *generation*, for a schedule that is restarted every time the population is reinitialized.
+
+`analysis.options` A list additional arguments to be passed to the estimation software. The names of list elements must correspond to the arguments changed in the respective estimation software. E.g. `analysis.options$model` can contain additional modeling commands - such as regressions on auxiliary variables.
+
+`suppress.model` A logical indicating whether to suppress the default model generation. If *TRUE* a model must be provided in `analysis.options$model`.
+
+`seed` A random seed for the generation of random samples. 
+
+`filename` The stem of the filenames used to save inputs, outputs, and data files when `software` = *Mplus*. This may include the file path. When *NULL* (the default) files will be saved to the temporary directory, which is deleted when the R session is ended.
 
 ### Details
 
-The pheromone function provided via  objective  is used to assess the quality of the solutions.  These functions can contain any combination of the fit indices provided by the estimation software.  When using Mplus these fit indices are ’rmsea’, ’srmr’, ’cfi’, ’tli’, ’chisq’ (with ’df’ and ’pvalue’),  ’aic’, ’bic’, and ’abic’. With lavaan any fit index provided by  inspect  can be used. Additionally  ’crel’ provides an aggregate of composite reliabilites, ’rel’ provides a vector or a list of reliability  coefficients for the latent variables, ’con’ provides an aggregate consistency estimate for MTMM  analyses, and ’lvcor’ provides a list of the latent variable correlation matrices. For more detailed  objective functions ’lambda’, ’theta’, ’psi’, and ’alpha’ provide the model-implied matrices. Per  default a pheromone function using ’crel’, ’rmsea’, and ’srmr’ is used. Please be aware that the  objective  must be a function with the required fit indices as (correctly named) arguments.  Using model comparisons via the  comparisons  argument compares the target model to a model  with one less degree of assumed invariance (e.g. if your target model contains strong invariance,  the comparison model contain weak invariance). Adding comparisons will change the preset for  the objective function to include model differences. With comparisons, a custom objective function  (the recommended approach) can also include all model fit indices with a preceding  delta.  To  indicate the difference in this index between the two models. If more than one type of comparison  is used, the argument of the objective function should end in the type of comparison requested (e.g.  delta.cfi.group  to use the difference in CFI between the model comparison of invariance across  groups).
+The pheromone function provided via  objective  is used to assess the quality of the solutions.  These functions can contain any combination of the fit indices provided by the estimation software.  When using Mplus these fit indices are `rmsea`, `srmr`, `cfi`, `tli`, `chisq` (with `df` and ’pvalue’),  `aic`, `bic`, and `abic`. With lavaan any fit index provided by  inspect  can be used. Additionally `crel` provides an aggregate of composite reliabilites, `rel` provides a vector or a list of reliability  coefficients for the latent variables, `con` provides an aggregate consistency estimate for MTMM  analyses, and `lvcor` provides a list of the latent variable correlation matrices. For more detailed objective functions `lambda`, `theta`, `psi`, and `alpha` provide the model-implied matrices. Per  default a pheromone function using ’crel’, ’rmsea’, and ’srmr’ is used. Please be aware that the  objective  must be a function with the required fit indices as (correctly named) arguments. Using model comparisons via the  comparisons  argument compares the target model to a model  with one less degree of assumed invariance (e.g. if your target model contains strong invariance,  the comparison model contain weak invariance). Adding comparisons will change the preset for  the objective function to include model differences. With comparisons, a custom objective function  (the recommended approach) can also include all model fit indices with a preceding  delta.  To  indicate the difference in this index between the two models. If more than one type of comparison  is used, the argument of the objective function should end in the type of comparison requested (e.g. delta.cfi.group to use the difference in CFI between the model comparison of invariance across  groups).
 
-The artificial bee algorithm offers multiple parameters with which the search process can be influenced. The three main parameters are ‘generations’, ‘individuals’ and ‘limit’. ‘Generation’ determines after how many complete search iterations the algorithm terminates. ‘individuals’ determines the total amount of bees employed in each bee phase. ‘limit’ determines the number of tries a bee has to find a better solution.
+The artificial bee algorithm offers multiple parameters with which the search process can be influenced. The three main parameters are `generations`, `individuals` and `limit`. `generations` determines after how many complete search iterations the algorithm terminates. `individuals` determines the total amount of bees employed in each bee phase. `limit` determines the number of tries a bee has to find a better solution.
 
-The parameters ‘ls.sel’ for the employed bee phase and ‘ls.onlooker.sel’ for the onlooker bee phase determine the pairing mechanism between bees during their intergenerational search defined by the ‘limit’ parameter. A ‘wide’ setting means that for each new limit iteration a new partner bee & respective solution is randomly selected. A ‘narrow’ setting means that the same paring established during the first limit iteration is used for the sampling of new solutions during all limit iterations. The ‘selection’ parameter determines how a partner bee is selected during the onlooker bee phase. The two possible mechanisms are ‘tournament’ and ‘proportional’ selection. Tournament selection lets a number of randomly created solutions compete against each other, while proportional selection selects a partner bee with a frequency directly proportional to the quality of its solution.
+The parameters `ls.sel` for the employed bee phase and ‘ls.onlooker.sel’ for the onlooker bee phase determine the pairing mechanism between bees during their intergenerational search defined by the `limit` parameter. A *wide* setting means that for each new limit iteration a new partner bee & respective solution is randomly selected. A *narrow* setting means that the same paring established during the first limit iteration is used for the sampling of new solutions during all limit iterations. The `selection` parameter determines how a partner bee is selected during the onlooker bee phase. The two possible mechanisms are `tournament` and `proportional` selection. Tournament selection lets a number of randomly created solutions compete against each other, while proportional selection selects a partner bee with a frequency directly proportional to the quality of its solution.
 
-Three parameters ‘scout.selection’, ‘cutoff’, ‘size_best_fs’ influence the repair operator. ‘scout.selection’ determines the mechanism by which the worst items are eliminated from a non-improved onlooker bee solution. It can be set to ‘random’, ‘tournament’ and ‘proportional’. ‘cutoff’ determines the percentage of low-performing items eliminated from the solution. ‘size_best_fs’ determines the number of high quality solution to sample items from if either tournament or proportional scout.selection is selected.
+Three parameters `scout.selection`, `cutoff`, `size_best_fs` influence the repair operator. `scout.selection` determines the mechanism by which the worst items are eliminated from a non-improved onlooker bee solution. It can be set to *random*, *tournament* and *proportional*. `cutoff` determines the percentage of low-performing items eliminated from the solution. `size_best_fs` determines the number of high quality solution to sample items from if either tournament or proportional scout.selection is selected.
 
 ## Code examples
 
