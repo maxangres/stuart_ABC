@@ -81,7 +81,7 @@ Construct subtests from a given pool of items using an artificial bee colony alg
 	    filename=NULL
     )
 
-## Arguments
+### Arguments
 
 `data`  A data.frame containing all relevant data.  
 
